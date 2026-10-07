@@ -82,10 +82,14 @@ import {
 import type { EntryRow } from '@/data/types'
 
 const meta = moduleMeta('block')
-const columns = ["分段编号", "分段名称", "所属区域", "钢材牌号", "设计重量", "外形尺寸", "计划工时", "分段状态"]
-const actions = ["开始下料", "转入装配", "完成焊接"]
-const statuses = ["待开工", "下料中", "装配中", "焊接中", "已完工"]
-const stats = [{"label": "分段总数", "value": 0}, {"label": "建造中分段", "value": 0}, {"label": "已完工分段", "value": 0}]
+const columns = ["分段编号", "分段名称", "所属区域", "钢材牌号", "设计重量", "外形尺寸", "计划工时", "工时口径版本", "分段状态"]
+const actions = ["开始下料", "转入装配", "完成焊接", "确认完工"]
+const statuses = ["待开工", "下料", "装配", "焊接", "完工"]
+const stats = computed(() => [
+  { label: "分段总数", value: rows.value.length },
+  { label: "建造中分段", value: rows.value.filter((row) => row.status !== "完工").length },
+  { label: "已完工分段", value: rows.value.filter((row) => row.status === "完工").length },
+])
 
 const rows = ref<EntryRow[]>([])
 const total = ref(0)

@@ -49,6 +49,8 @@ export function runAction(key: string, id: number, action: string): ActionResult
     status: target,
     pending: target !== lastStatus,
     abnormal: NEGATIVE_ACTIONS.some((verb) => action.startsWith(verb)),
+    // 记录被改动一次，乐观锁版本号随之 +1，并发拖动的旧快照就此作废。
+    rev: Number(rows[index].rev ?? 0) + 1,
   }
   const next = [...rows]
   next[index] = updated

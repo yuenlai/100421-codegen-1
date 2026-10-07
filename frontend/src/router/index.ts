@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import Dashboard from '@/views/Dashboard.vue'
 const Block = () => import('@/views/block/index.vue')
+const Workshop = () => import('@/views/workshop/index.vue')
 const Cutting = () => import('@/views/cutting/index.vue')
 const AssemblySmall = () => import('@/views/assembly_small/index.vue')
 const AssemblyMedium = () => import('@/views/assembly_medium/index.vue')
@@ -24,6 +25,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', name: 'dashboard', component: Dashboard },
+    { path: '/workshop', name: 'workshop', component: Workshop },
     { path: '/block', name: 'block', component: Block },
     { path: '/cutting', name: 'cutting', component: Cutting },
     { path: '/assembly_small', name: 'assembly_small', component: AssemblySmall },

@@ -5,7 +5,9 @@ export type EntryRow = {
   status: string
   pending: boolean
   abnormal: boolean
-  [field: string]: string | number | boolean
+  /** 乐观锁版本号：并发拖动时只有带当前版本号的那一次落库能生效。 */
+  rev?: number
+  [field: string]: string | number | boolean | undefined
 }
 
 export type ModuleMeta = {
