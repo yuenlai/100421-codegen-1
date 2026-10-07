@@ -54,6 +54,55 @@ export function resetRows(key: string): EntryRow[] {
   return rows
 }
 
+// 车间级零散台账（工时标准、合拢顺序等）单独存一份，不混入业务模块数据。
+const SETTINGS_KEY = 'ship-block-construction:shop-settings'
+
+function readSettings(): Record<string, unknown> {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return {}
+  }
+  const raw = window.localStorage.getItem(SETTINGS_KEY)
+  if (!raw) {
+    return {}
+  }
+  try {
+    return JSON.parse(raw) as Record<string, unknown>
+  } catch {
+    return {}
+  }
+}
+
+let settingsCache: Record<string, unknown> | null = null
+
+export function getSetting<T>(key: string): T | null {
+  if (settingsCache === null) {
+    settingsCache = readSettings()
+  }
+  const value = settingsCache[key]
+  return value === undefined ? null : clone(value as T)
+}
+
+export function saveSetting<T>(key: string, value: T): void {
+  const next = { ...(settingsCache ?? readSettings()), [key]: value }
+  settingsCache = next
+  if (typeof window !== 'undefined' && window.localStorage) {
+    window.localStorage.setItem(SETTINGS_KEY, JSON.stringify(next))
+  }
+}
+
+// 别的标签页落库后让本页缓存失效：并发拖卡时本页再提交就会撞版本号，
+// 乐观锁据此只放行先落库的那条。
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
+    if (event.key === STORAGE_KEY) {
+      cache = null
+    }
+    if (event.key === SETTINGS_KEY) {
+      settingsCache = null
+    }
+  })
+}
+
 export function storageKey(): string {
   return STORAGE_KEY
 }

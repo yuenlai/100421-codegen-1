@@ -82,9 +82,9 @@ import {
 import type { EntryRow } from '@/data/types'
 
 const meta = moduleMeta('schedule')
-const columns = ["节点编号", "节点名称", "计划开始", "计划完成", "实际开始", "实际完成", "负责人", "节点状态"]
+const columns = ["节点编号", "节点名称", "计划开始", "计划完成", "实际开始", "实际完成", "负责人", "来源", "节点状态"]
 const actions = ["启动节点", "确认完成", "标记延期"]
-const statuses = ["待启动", "进行中", "已完成", "已延期", "已取消"]
+const statuses = ["待排", "待启动", "进行中", "已完成", "已延期", "已取消"]
 const stats = [{"label": "计划节点数", "value": 0}, {"label": "进行中节点", "value": 0}, {"label": "延期节点数", "value": 0}]
 
 const rows = ref<EntryRow[]>([])
